@@ -22,3 +22,11 @@ class Library(models.Model):
 class Librarian(models.Model):
     name = models.CharField(max_length=200)
     library = models.OneToOneField(Library, on_delete=models.CASCADE)
+
+# #Create new user
+# from django.contrib.auth.models import User
+# user = User.objects.create_user(username="", password="")
+
+# #Authenticate
+# from django.contrib.auth import authenticate,login
+# def
