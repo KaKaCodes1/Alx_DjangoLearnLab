@@ -26,12 +26,18 @@ class Librarian(models.Model):
     library = models.OneToOneField(Library, on_delete=models.CASCADE)
 
 class UserProfile(models.Model):
+    roles_choices = [
+        ('Admin','Admin'), 
+        ('Librarian','Librarian'), 
+        ('Member','Member'),
+    ] 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    role = models.CharField(max_length=10, choices=[('Admin','Admin'), ('Librarian','Librarian'), ('Member','Member')], default='Member')
+    role = models.CharField(max_length=10, choices=roles_choices, default='Member')
 
 #Use Django signals to automatically create a UserProfile when a new user is registered.
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
+
 
