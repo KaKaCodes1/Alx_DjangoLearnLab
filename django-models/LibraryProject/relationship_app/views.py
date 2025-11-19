@@ -20,9 +20,12 @@ class LibraryDetailView(DetailView):
     context_object_name = 'library'
 
 #create a new user
-class register(CreateView):
+class RegisterView(CreateView):
     form_class = UserCreationForm
     success_url = reverse_lazy('login')
     template_name = 'relationship_app/register.html'
+
+def register(request):
+    return RegisterView.as_view()(request)   
 
 
