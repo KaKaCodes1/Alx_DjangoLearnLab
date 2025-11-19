@@ -47,26 +47,26 @@ def register(request):
 
 # --- Access Check Helper Functions ---
 
-def is_admin(user):
-    if user.is_authenticated: 
-        try:
-            return user.userprofile.role == 'Admin'
-        except UserProfile.DoesNotExist:
-            return False
-    return False
+# def is_admin(user):
+#     if user.is_authenticated: 
+#         try:
+#             return user.userprofile.role == 'Admin'
+#         except UserProfile.DoesNotExist:
+#             return False
+#     return False
 
-def is_librarian(user):
-    if user.is_authenticated: 
-        try:
-            return user.userprofile.role == 'Librarian'
-        except UserProfile.DoesNotExist:
-            return False
-    return False
+# def is_librarian(user):
+#     if user.is_authenticated: 
+#         try:
+#             return user.userprofile.role == 'Librarian'
+#         except UserProfile.DoesNotExist:
+#             return False
+#     return False
 
-def is_member(user):
-    if user.is_authenticated: 
-        try:
-            return user.userprofile.role == 'Member'
-        except UserProfile.DoesNotExist:
-            return False
-    return False
+# def is_member(user):
+#     if user.is_authenticated: 
+#         try:
+#             return user.userprofile.role == 'Member'
+#         except UserProfile.DoesNotExist:
+#             return False
+#     return False
