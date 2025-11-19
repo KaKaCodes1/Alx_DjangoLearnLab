@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth import login
+from .models import UserProfile
 
 # List all books
 def list_books(request):
@@ -35,3 +36,9 @@ def register(request):
             form = UserCreationForm()
         return render(request, 'relationship_app/register.html', {'form':form})
 
+def is_admin(user):
+    return UserProfile.objects.filter(user=user, role='Admin').exists()
+@user_passes_test(is_admin)
+def admin_view(request):
+    # context = {'message':'Welcome Admin!'}
+    return render(request, 'relationship_app/admin_view.html')
