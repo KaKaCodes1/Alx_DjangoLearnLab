@@ -4,10 +4,12 @@ from .models import Library
 from django.views.generic.detail import DetailView
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView, DeleteView
 from django.contrib.auth import login
 from .models import UserProfile
 from django.contrib.auth.decorators import user_passes_test
+from django.utils.decorators import method_decorator
+from django.contrib.auth.decorators import permission_required
 
 
 # List all books
@@ -15,6 +17,27 @@ def list_books(request):
     books = Book.objects.all()
     context = {'books':books}
     return render(request, 'relationship_app/list_books.html',context)
+
+#adding books
+@method_decorator(permission_required('relationship_app.can_add_book'), name='dispatch')
+class BookCreateView(CreateView):
+    model = Book
+    fields = ["title", "author"]
+    success_url = reverse_lazy('list_books')
+
+@method_decorator(permission_required('relationship_app.can_change_book'), name='dispatch')
+class BookUpdateView(UpdateView):
+    model = Book
+    fields = ["title", "author"]
+    success_url = reverse_lazy('list_books')
+
+@method_decorator(permission_required('relationship_app.can_delete_book'), name='dispatch')
+class BookDeleteView(DeleteView):
+    model = Book
+    # Django requires a template for confirmation before deletion
+    template_name = 'relationship_app/book_confirm_delete.html'
+    success_url =reverse_lazy('list_books')
+
 
 #Get library details
 class LibraryDetailView(DetailView):

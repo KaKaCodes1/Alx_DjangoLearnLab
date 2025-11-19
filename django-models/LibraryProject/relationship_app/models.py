@@ -17,6 +17,14 @@ class Book(models.Model):
         book_title = f"{self.title} by {self.author}"
         return book_title
 
+    class Meta:
+        permissions = [
+            # ('codename', 'human-readable description')
+            ('can_add_book', 'Permission to add a book'), 
+            ('can_change_book', 'Permission to change a book'), 
+            ('can_delete_book', 'Permission to delete a book'),
+        ]
+
 class Library(models.Model):
     name = models.CharField(max_length=200)
     books = models.ManyToManyField(Book, related_name='books')
