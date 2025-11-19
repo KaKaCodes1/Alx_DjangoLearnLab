@@ -38,9 +38,35 @@ def register(request):
             form = UserCreationForm()
         return render(request, 'relationship_app/register.html', {'form':form})
 
+# def is_admin(user):
+#     return UserProfile.objects.filter(user=user, role='Admin').exists()
+# @user_passes_test(is_admin)
+# def Admin(request):
+#     # context = {'message':'Welcome Admin!'}
+#     return render(request, 'relationship_app/admin_view.html')
+
+# --- Access Check Helper Functions ---
+
 def is_admin(user):
-    return UserProfile.objects.filter(user=user, role='Admin').exists()
-@user_passes_test(is_admin)
-def Admin(request):
-    # context = {'message':'Welcome Admin!'}
-    return render(request, 'relationship_app/admin_view.html')
+    if user.is_authenticated: 
+        try:
+            return user.userprofile.role == 'Admin'
+        except UserProfile.DoesNotExist:
+            return False
+    return False
+
+def is_librarian(user):
+    if user.is_authenticated: 
+        try:
+            return user.userprofile.role == 'Librarian'
+        except UserProfile.DoesNotExist:
+            return False
+    return False
+
+def is_member(user):
+    if user.is_authenticated: 
+        try:
+            return user.userprofile.role == 'Member'
+        except UserProfile.DoesNotExist:
+            return False
+    return False
