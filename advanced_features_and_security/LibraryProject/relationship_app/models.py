@@ -48,8 +48,5 @@ def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
 
-class CustomUser(AbstractUser):
-    date_of_birth = models.DateField(null=True)
-    profile_photo = models.ImageField(null=True, blank=True)
 
 
