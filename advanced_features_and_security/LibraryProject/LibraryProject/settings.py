@@ -23,11 +23,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-17030ki869qm@tch=qzn&4yqnfufzl*1lobi2_!+wug#^73%ri'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 
+#to enforce cookies sent over HTTPS only
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
 
+# to add additional browser-side protections.
+X_FRAME_OPTIONS = 'DENY' #Prevents your site from being loaded in an <iframe>, defending against Clickjacking attacks.
+SECURE_CONTENT_TYPE_NOSNIFF = True #Prevents browsers from guessing the content type of files, mitigating content-type sniffing vulnerabilities that could lead to XSS.
+SECURE_BROWSER_XSS_FILTER = True #Obsolete in modern browsers, but instructs Django to set the X-XSS-Protection
 # Application definition
 
 INSTALLED_APPS = [
