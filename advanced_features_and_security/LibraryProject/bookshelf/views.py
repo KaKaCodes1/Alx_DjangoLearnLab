@@ -17,7 +17,7 @@ LIST_BOOKS_URL = reverse_lazy('list_books')
 
 # --- 1. View List (Secured by bookshelf.can_view) ---
 # Requires permission to even see the list of books
-@method_decorator(permission_required('bookshelf.can_view'), name='dispatch')
+@method_decorator(permission_required('bookshelf.can_view', raise_exception=True), name='dispatch')
 class BookListView(ListView):
     model = Book
     template_name = 'bookshelf/book_list.html'
@@ -25,7 +25,7 @@ class BookListView(ListView):
 
 
 # --- 2. Create View (Secured by bookshelf.can_create) ---
-@method_decorator(permission_required('bookshelf.can_create'), name='dispatch')
+@method_decorator(permission_required('bookshelf.can_create', raise_exception=True), name='dispatch')
 class BookCreateView(CreateView):
     model = Book
     fields = ["title", "author", "publication_year"]
@@ -34,7 +34,7 @@ class BookCreateView(CreateView):
 
 
 # --- 3. Update View (Secured by bookshelf.can_edit) ---
-@method_decorator(permission_required('bookshelf.can_edit'), name='dispatch')
+@method_decorator(permission_required('bookshelf.can_edit', raise_exception=True), name='dispatch')
 class BookUpdateView(UpdateView):
     model = Book
     fields = ["title", "author", "publication_year"]
@@ -43,7 +43,7 @@ class BookUpdateView(UpdateView):
 
 
 # --- 4. Delete View (Secured by bookshelf.can_delete) ---
-@method_decorator(permission_required('bookshelf.can_delete'), name='dispatch')
+@method_decorator(permission_required('bookshelf.can_delete', raise_exception=True), name='dispatch')
 class BookDeleteView(DeleteView):
     model = Book
     template_name = 'bookshelf/book_confirm_delete.html' 

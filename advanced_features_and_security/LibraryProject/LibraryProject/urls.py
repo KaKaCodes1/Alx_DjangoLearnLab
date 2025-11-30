@@ -16,9 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-
+# from django.views.generic.base import RedirectView
 
 urlpatterns = [
+    # 1. Add an empty path ('') that redirects to the desired app path.
+    # path('', RedirectView.as_view(url='bookshelf/', permanent=True), name='index'),
     path('admin/', admin.site.urls),
     path('bookshelf/', include('bookshelf.urls')),
     path('relationship_app/', include('relationship_app.urls')),
