@@ -12,11 +12,15 @@ class CustomUserAdmin(UserAdmin):
 
     # Define a new fieldset for the custom fields on the user edit page
     fieldsets = UserAdmin.fieldsets + (
-        ('Custom Fields',{'fields':('date_of_birth', 'profile_photo',)})
+        (
+            ('Custom Fields', {'fields':('date_of_birth', 'profile_photo',)})
+        ),
     )
     ## Defines the layout for adding a new user
     add_fieldsets = UserAdmin.add_fieldsets + (
-        (None,{'fields':('email', 'date_of_birth', 'profile_photo',)})
+        (
+            (None, {'fields':('email', 'date_of_birth', 'profile_photo',)})
+        ),
     )
 
 # Register your models here.

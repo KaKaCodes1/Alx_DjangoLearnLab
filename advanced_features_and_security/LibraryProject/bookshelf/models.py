@@ -11,6 +11,14 @@ class Book(models.Model):
         object_string = f"{self.title} by {self.author} published in {self.publication_year}"
         return object_string
     
+    class Meta:
+        permissions =[
+            ('can_view','Permission to view books'),
+            ('can_create','Permission to create/add new book'),
+            ('can_edit','Permission to edit book details'),
+            ('can_delete','Permission to delete a book')
+        ]
+    
 
 
 class CustomUserManager(BaseUserManager):
