@@ -50,6 +50,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'csp.middleware.CSPMiddleware', #add CSP to middleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,6 +60,19 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
+
+# Content security policy settings
+#To ensure all content(scripts, styles etc) comes from the site's own origin
+CSP_DEFAULT_SRC = ("'self'",)
+
+# Specifically for scripts: allow self and potentially a trusted CDN or analytics script
+CSP_SCRIPT_SRC = ("'self'",)
+
+# Specifically for styles: allow self
+CSP_STYLES_SRC = ("'self'",)
+
+# For images: allow self and data URIs (often used for inline images/icons)
+CSP_IMG_SRC = ("'self'","data:")
 
 TEMPLATES = [
     {
