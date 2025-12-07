@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Books creation form</title>
+    <title>Books Form</title>
 </head>
 <body>
-    <h1>New Book</h1>
+    {% if object %}
+        <h2>Edit Book: {{ object.title }}</h2>
+    {% else %}  
+        <h2>Add New Book</h2> 
+    {% endif %}
     <form method="post">
         {% csrf_token %}
 
