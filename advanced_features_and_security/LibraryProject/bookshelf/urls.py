@@ -15,4 +15,6 @@ urlpatterns = [
     
     # Delete View (DELETE)
     path('books/<int:pk>/delete/', views.BookDeleteView.as_view(), name='book_delete'),
+
+    path('search/', views.book_search_secure, name='book_search'),
 ]

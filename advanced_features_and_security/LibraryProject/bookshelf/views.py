@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import user_passes_test
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import permission_required
 from django.urls import reverse_lazy
+from .forms import ExampleForm
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
 
 
@@ -48,3 +49,28 @@ class BookDeleteView(DeleteView):
     model = Book
     template_name = 'bookshelf/book_confirm_delete.html' 
     success_url = LIST_BOOKS_URL
+
+def book_search_secure(request):
+    results = Book.objects.none()
+    form = ExampleForm() # Initialize an empty form
+
+    if request.method == 'GET':
+        # 1. Bind the raw user data (query parameters) to the form
+        form = ExampleForm(request.GET) 
+        
+        # 2. CRUCIAL: Validate and sanitize input
+        if form.is_valid():
+            # Data is now clean and safe. Access it via form.cleaned_data.
+            search_term = form.cleaned_data['title']
+            
+            # 3. Secure Query: Use Django ORM (SQL Injection safe)
+            if search_term:
+                results = Book.objects.filter(
+                    title__icontains=search_term
+                ).order_by('title')
+        
+    context = {
+        'form': form,
+        'results': results,
+    }
+    return render(request, 'bookshelf/book_search.html', context)
