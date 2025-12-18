@@ -1,12 +1,13 @@
 from django.db import models
 
-# Create your models here.
+# Holds the author's name
 class Author(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
         return self.name
     
+#Holds all details about a book
 class Book(models.Model):
     title = models.CharField(max_length=400)
     publication_year = models.IntegerField()
