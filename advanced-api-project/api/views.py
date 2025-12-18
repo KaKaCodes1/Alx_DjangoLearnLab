@@ -1,7 +1,8 @@
 from django.shortcuts import render
 from .models import Book
 from rest_framework import generics, filters
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters import rest_framework
+# from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from .serializers import BookSerializer
 
@@ -13,7 +14,7 @@ class BookListView(generics.ListAPIView):
 
     # Enable filtering, searching, and ordering
     filter_backends = [
-        DjangoFilterBackend,
+        rest_framework.DjangoFilterBackend,
         filters.SearchFilter,
         filters.OrderingFilter
     ]
