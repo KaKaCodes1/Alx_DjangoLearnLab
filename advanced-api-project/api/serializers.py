@@ -9,7 +9,7 @@ class BookSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     #When you are only validating one field use value rather than data as parameters
-    def validate(self, value):
+    def validate_publication_year(self, value):
         if value > date.today().year:
             raise serializers.ValidationError("Publication year should not be set in the future")
         return value
