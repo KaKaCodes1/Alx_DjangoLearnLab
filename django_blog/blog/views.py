@@ -6,6 +6,7 @@ from django.views.generic import ListView,CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post
+from .forms import PostForm
 # Import reverse_lazy to handle redirects after a successful deletion
 from django.urls import reverse_lazy
 #Registration View
@@ -76,6 +77,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
+    template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy('post-list')
 
     def test_func(self):
