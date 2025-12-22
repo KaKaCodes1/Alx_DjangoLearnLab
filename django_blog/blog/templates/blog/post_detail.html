@@ -8,4 +8,21 @@
     <a href = "{% url 'post_update' post.pk%}">Edit</a>
     <a href = "{% url 'post_delete' post.pk%}">Delete</a>
 {%endif%}
+    <a href = "{% url 'comment_create' object.id%}">Add Comment</a>
+
+
+<hr>
+<h3>Comments ({{object.comments.count}})</h3>
+{% for comment in post.comments.all%}
+    <div style="margin-bottom: 20px;">
+        <p>{{comment.content}}</p>
+        <small>By {{ comment.author }} on {{ comment.created_at }}</small>
+        {%if user == comment.author%}
+            <a href = "{% url 'comment_update' comment.pk%}">Edit</a>
+            <a href = "{% url 'comment_delete' comment.pk%}">Delete</a>
+        {%endif%}
+    </div>
+{%empty%}
+    <p>No comments</p>
+{%endfor%}
 {%endblock%}

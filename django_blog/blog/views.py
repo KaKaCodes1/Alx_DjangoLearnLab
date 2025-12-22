@@ -5,8 +5,8 @@ from .forms import SignUpForm, UserUpdateForm
 from django.views.generic import ListView,CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 # Import reverse_lazy to handle redirects after a successful deletion
 from django.urls import reverse_lazy
 #Registration View
@@ -86,5 +86,55 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         #Ensure only the author can delete their own post
         post = self.get_object()
         return self.request.user == post.author
+    
+# class CommentListView(ListView):
+#     model = Comment
+#     template_name = 'blog/post_detail.html'
+#     context_object_name = 'comments'
+#     ordering = ['-created_at']
+
+class CommentCreateView(LoginRequiredMixin,CreateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+
+    def form_valid(self, form):
+        form.instance.post_id = self.kwargs['pk']
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+    
+    # Redirect to the post detail page on success
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.kwargs['pk']})
+    
+class CommentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Comment
+    form_class = CommentForm
+    template_name = 'blog/comment_form.html'
+    
+    def test_func(self):
+        #Ensure only the author can edit their own comment
+        comment = self.get_object()
+        return self.request.user == comment.author
+    
+    def get_success_url(self):
+        return reverse_lazy('post_detail', kwargs={'pk': self.kwargs['pk']})
+
+    
+class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Comment
+    template_name = 'blog/comment_confirm_delete.html'
+
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+    
+    def get_success_url(self):
+        # We need the post ID to redirect back to the right page
+        comment = self.get_object()
+        return reverse_lazy('post_detail', kwargs={'pk': comment.post.pk})
+    
+
+
     
 
