@@ -7,11 +7,11 @@
         {% for post in results %}
             <article class="media content-section">
                 <div class="media-body">
-                    <h2><a class="article-title" href="{% url 'post-detail' post.pk %}">{{ post.title }}</a></h2>
+                    <h2><a class="article-title" href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
                     <p class="article-content">{{ post.content|truncatewords:50 }}</p>
                     <small class="text-muted">Tags: 
                         {% for tag in post.tags.all %}
-                            <a href="{% url 'posts-by-tag' tag.slug %}">{{ tag.name }}</a>
+                            <a href="{% url 'posts_by_tag' tag.slug %}">{{ tag.name }}</a>
                         {% endfor %}
                     </small>
                 </div>
@@ -19,6 +19,6 @@
         {% endfor %}
     {% else %}
         <p>No posts found matching your query.</p>
-        <a href="{% url 'post-list' %}">Go back home</a>
+        <a href="{% url 'post_list' %}">Go back home</a>
     {% endif %}
 {% endblock %}
