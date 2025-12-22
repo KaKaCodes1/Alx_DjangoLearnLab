@@ -53,18 +53,20 @@ class PostCreateView(LoginRequiredMixin,CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
+    success_url = reverse_lazy('post_list')
 
     def form_valid(self, form):
-        form.instance.author = self.instance.user
+        form.instance.author = self.request.user
         return super().form_valid(form)
     
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/post_form.html'
+    success_url = reverse_lazy('post_list')
 
     def form_valid(self, form):
-        form.instance.author = self.instance.user
+        form.instance.author = self.request.user
         return super().form_valid(form)
     
     def test_func(self):
@@ -78,11 +80,11 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
-    success_url = reverse_lazy('post-list')
+    success_url = reverse_lazy('post_list')
 
     def test_func(self):
         #Ensure only the author can delete their own post
         post = self.get_object()
-        self.request.user == post.author
+        return self.request.user == post.author
     
 
