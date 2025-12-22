@@ -7,6 +7,7 @@ from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, Comment
 from .forms import PostForm, CommentForm
+from django.db.models import Q # Import Q objects for complex lookups
 # Import reverse_lazy to handle redirects after a successful deletion
 from django.urls import reverse_lazy
 #Registration View
@@ -133,6 +134,33 @@ class CommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         # We need the post ID to redirect back to the right page
         comment = self.get_object()
         return reverse_lazy('post_detail', kwargs={'pk': comment.post.pk})
+    
+# View to display posts filtered by a specific tag
+class PostByTagListView(ListView):
+    model = Post
+    template_name = 'blog/post_list.html' # Reuse the existing list template
+    context_object_name = 'posts'
+    ordering = ['-published_date']
+
+    def get_queryset(self):
+        # Retrieve the tag slug from the URL parameters
+        tag_slug = self.kwargs.get('tag_slug')
+        # Filter posts where tags__slug matches the URL tag
+        return Post.objects.filter(tags__slug=tag_slug).order_by('-published_date')
+
+#To handle search functionality
+def search_posts(request):
+    query = request.GET.get('q') # Get the search term from the URL (e.g., ?q=django)
+    results = []
+
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |
+            Q(content__icontains=query) |
+            Q(tags__name__icontains=query)
+        ).distinct() #ensures we don't get duplicate posts if multiple fields match
+
+    return render(request, 'blog/search_results.html', {'results': results, 'query': query})
     
 
 

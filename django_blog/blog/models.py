@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
+from taggit.managers import TaggableManager
 
 # Create your models here.
 class Post(models.Model):
@@ -11,6 +13,7 @@ class Post(models.Model):
         on_delete=models.CASCADE,
         related_name="posts"
     )
+    tags = TaggableManager()
     def __str__(self):
         return self.title
     
@@ -31,3 +34,5 @@ class Comment(models.Model):
 
     def __str__(self):
         return f"Comment by {self.author} on {self.post}"
+    
+
