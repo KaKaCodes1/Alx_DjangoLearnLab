@@ -21,7 +21,3 @@ class UserSerializer(serializers.ModelSerializer):
         #create a token immediately after registration
         Token.objects.create(user=user)
         return user
-    
-    def update(self, instance, validated_data):
-        # Handle profile picture update specifically if needed
-        return super().update(instance, validated_data)
