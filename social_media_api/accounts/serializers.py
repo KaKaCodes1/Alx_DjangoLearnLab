@@ -21,3 +21,7 @@ class UserSerializer(serializers.ModelSerializer):
         #create a token immediately after registration
         Token.objects.create(user=user)
         return user
+    """
+    serializers.CharField()
+    """
+     
