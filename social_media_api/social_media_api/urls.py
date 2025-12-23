@@ -21,7 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls'))
+    path('accounts/', include('accounts.urls')),
+    path('api/',include('posts.urls'))
 ]
 # This ensures that /media/ URLs work while you are developing locally
 if settings.DEBUG:

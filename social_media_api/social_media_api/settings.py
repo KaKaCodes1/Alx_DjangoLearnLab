@@ -128,12 +128,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 REST_FRAMEWORK = {
+    # This tells Django to use the "Page Number" style (e.g., ?page=2)
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # This tells Django how many items to show per page
+    'PAGE_SIZE': 10,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        # Allows Session Authentication (good for browsable API)
-        'rest_framework.authentication.SessionAuthentication', 
-        
-        # Add Token Authentication for clients (like Postman)
-        'rest_framework.authentication.TokenAuthentication', 
+        'rest_framework.authentication.TokenAuthentication',
     ],
 }
 # The URL prefix used to access media files in the browser
