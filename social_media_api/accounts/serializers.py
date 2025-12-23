@@ -25,3 +25,7 @@ class UserSerializer(serializers.ModelSerializer):
     serializers.CharField()
     """
      
+class UserConnectionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ['id', 'username', 'email', 'bio']

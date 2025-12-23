@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from django.contrib.auth import get_user_model
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserConnectionSerializer
 from rest_framework import generics,permissions, status
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
 
 # Create your views here.
 User = get_user_model()
@@ -71,3 +72,19 @@ class UnfollowUserView(generics.GenericAPIView):
         return Response({"message": f"You have unfollowed {user_to_unfollow.username}"}, status=status.HTTP_200_OK)
     
     """CustomUser.objects.all()"""
+
+class UserConnectionsListView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        user = request.user
+        
+        # 1. Get people the user follows
+        following = user.following.all()
+        # 2. Get people who follow the user (related_name='followers')
+        followers = user.followers.all()
+
+        return Response({
+            "following": UserConnectionSerializer(following, many=True).data,
+            "followers": UserConnectionSerializer(followers, many=True).data
+        })
